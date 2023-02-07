@@ -3,10 +3,12 @@
 ## Iniciar
 
 posterior al comando 
-- npm install 
+- npm install
+ 
 para instalar todas las dependencias necesarias.
 el comando 
--npm run dev
+- npm run dev
+
 inicializará el proyecto 
 
 ## Ingresar
