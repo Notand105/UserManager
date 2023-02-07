@@ -1,5 +1,14 @@
 # UserManager
 
+## Iniciar
+
+posterior al comando 
+- npm install 
+para instalar todas las dependencias necesarias.
+el comando 
+-npm run dev
+inicializará el proyecto 
+
 ## Ingresar
 
 se puede ingresar directamente en el login utilizando las credenciales de prueba: 
