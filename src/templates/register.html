@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <!-- bootstrap -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div
+      class="container d-flex flex-column justify-content-center align-items-center"
+    >
+      <form action="/register" method="POST" class="row m-3 w-50">
+        <p class="">Enter your name:</p>
+        <input
+          class="m-1"
+          type="text"
+          name="name"
+          placeholder="name"
+          required
+        />
+        <p class="mt-2">Enter your lastname:</p>
+
+        <input
+          class="m-1"
+          type="text"
+          name="lastname"
+          placeholder="lastname"
+          required
+        />
+        <p class="mt-2">Select your user type:</p>
+        <select class="m-1" name="scope" id="scope-login">
+          <option value="USER">User</option>
+          <option value="ADMIN">Admin</option>
+        </select>
+        <p class="mt-2">Enter your rut:</p>
+        <input
+          class="m-1"
+          type="text"
+          name="rut"
+          placeholder="11.111.111-1"
+          required
+        />
+        <p class="mt-2">Enter your email:</p>
+        <input
+          class="m-1"
+          type="email"
+          name="email"
+          placeholder="email@mail.com"
+          required
+        />
+        <p class="mt-2">Enter your password:</p>
+        <input
+          class="m-1"
+          type="password"
+          name="password"
+          placeholder="*********"
+          required
+        />
+        <button class="btn bg-primary text-white" type="submit">
+          Register user
+        </button>
+      </form>
+      <p>Are you registed already ?</p>
+      <p>Login <a href="/login">here</a></p>
+    </div>
+  </body>
+</html>

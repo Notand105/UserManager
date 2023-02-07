@@ -1,0 +1,21 @@
+{
+  "name": "test-hapimongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/cookie": "^12.0.0",
+    "@hapi/hapi": "^21.2.1",
+    "@hapi/vision": "^7.0.0",
+    "dotenv": "^16.0.3",
+    "md5": "^2.3.0",
+    "mongoose": "^6.9.0",
+    "nodemon": "^2.0.20"
+  }
+}
