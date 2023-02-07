@@ -13,7 +13,8 @@ o registrar un nuevo usuario y utilizar sus credenciales para ingresar posterior
 ## Puntos a considerar
 
 - Cada usuario registrado comienza con un active: true representando un status de enabled y por lo tanto siendo capaz de iniciar sesión, este status puede ser cambiado desde la lista de usuarios.
-En caso de deshabilitar el status del usuario con el que se inició sesión, dicha sesión expirar
+En caso de deshabilitar el status del usuario con el que se inició sesión, dicha sesión expirará y el usuario no podrá iniciar sesión nuevamente hasta
+que su status sea puesto nuevamente en true
 
 - Si bien las contraseñas no deberian aparecer a simple vista, estas se muestran con el fin de demostrar el correcto encriptado.
 
