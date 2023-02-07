@@ -86,6 +86,7 @@
                 <th>Rut</th>
                 <th>Email</th>
                 <th>Password (encrypted)</th>
+                <th>Active</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -97,6 +98,8 @@
                 <th>{{rut}}</th>
                 <th>{{email}}</th>
                 <th>{{password}}</th>
+                <th><a href="/users/toggle/{{_id}}"><button class=" btn bg-secondary text-white
+                  ">{{active}}</button></a></th>
                 <th>
                   <a href="/users/delete/{{_id}}">
                     <button class="btn bg-danger text-white">Delete</button>
@@ -113,16 +116,9 @@
       </div>
     </div>
     <script>
-      // let table = document.querySelector("#users_table");
-
-      // dataTable = new DataTable(table, {
-      //   perPage: 3,
-      //   perPageSelect: [3, 6, 9, 12],
-      // });
+     
       $(document).ready(function () {
         $("#users_table").DataTable({
-          perPage: 3,
-          perPageSelect: [3, 6, 9, 12],
         });
       });
     </script>

@@ -9,7 +9,7 @@ const path = require("path");
 
 const inert = require("inert");
 
-// process is mandatory for dotenv
+// process for dotenv
 
 const process = require("process");
 
@@ -19,7 +19,7 @@ const md5 = require("md5");
 
 //dotenv
 
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: "./.env" });
 
 //cookies authentication
 
@@ -44,6 +44,7 @@ mongoose
 const User = mongoose.model("user", {
   name: String,
   lastname: String,
+  active: Boolean,
   scope: String,
   rut: String,
   email: String,
@@ -87,29 +88,29 @@ const init = async () => {
 
   //configurar cookies
 
-  server.auth.strategy('login', 'cookie', {
+  server.auth.strategy("login", "cookie", {
     cookie: {
-      name: 'session',
-      password: 'really_really_secure_password_at_least_32_characters_long',
+      name: "session",
+      password: "really_really_secure_password_at_least_32_characters_long",
       isSecure: false,
-      ttl: 6 * 60 * 60 * 1000 // 6 horas de duracion de la autenticacion 
+      ttl: 6 * 60 * 60 * 1000, // 6 horas de duracion de la autenticacion
     },
-    redirectTo: '/login',
-    validate: async(request, session) =>{
-
+    redirectTo: "/login",
+    validate: async (request, session) => {
       let LoginUser = await User.find({
         email: session.username,
         password: session.password,
-       });
-       if (LoginUser.length === 0){ 
-         return{isValid: false}
-        }
-        return {isValid: true}
-    }
-  })
+        active: true,
+      });
+      if (LoginUser.length === 0) {
+        return { isValid: false };
+      }
+      return { isValid: true };
+    },
+  });
 
   //apply the authentication to every page
-  server.auth.default('login')
+  server.auth.default("login");
 
   // ##########################################################################
   // ############################# ROUTES #####################################
@@ -118,14 +119,14 @@ const init = async () => {
   server.route({
     method: "GET",
     path: "/",
-    options:{
-      auth:{
-        mode:'try'
-      }
+    options: {
+      auth: {
+        mode: "try",
+      },
     },
     handler: (request, h) => {
-      if(request.auth.isAuthenticated){
-        return h.redirect().location('/users')
+      if (request.auth.isAuthenticated) {
+        return h.redirect().location("/users");
       }
       return h.redirect().location("/login");
     },
@@ -136,10 +137,10 @@ const init = async () => {
   server.route({
     method: "GET",
     path: "/register",
-    options:{
-      auth:{
-        mode:'try'
-      }
+    options: {
+      auth: {
+        mode: "try",
+      },
     },
     handler: (request, h) => {
       //TODO mostrar el formulario para agregar usuario
@@ -152,10 +153,10 @@ const init = async () => {
   server.route({
     method: "POST",
     path: "/register",
-    options:{
-      auth:{
-        mode:'try'
-      }
+    options: {
+      auth: {
+        mode: "try",
+      },
     },
     handler: async (request, h) => {
       let data = {
@@ -165,10 +166,13 @@ const init = async () => {
         rut: request.payload.rut,
         email: request.payload.email,
         password: md5(request.payload.password),
+        active: true,
       };
       let newUser = new User(data);
       await newUser.save();
-
+      if (request.auth.isAuthenticated) {
+        return h.redirect().location("/users");
+      }
       return h.redirect().location("/login");
     },
   });
@@ -178,10 +182,10 @@ const init = async () => {
   server.route({
     method: "GET",
     path: "/login",
-    options:{
-      auth:{
-        mode:'try'
-      }
+    options: {
+      auth: {
+        mode: "try",
+      },
     },
     handler: (request, h) => {
       //TODO mostrar el formulario para agregar usuario
@@ -192,10 +196,10 @@ const init = async () => {
   server.route({
     method: "POST",
     path: "/login",
-    options:{
-      auth:{
-        mode:'try'
-      }
+    options: {
+      auth: {
+        mode: "try",
+      },
     },
     handler: async (request, h) => {
       //TODO recibir el usuario agregado y añadirlo a la base de datos
@@ -203,7 +207,7 @@ const init = async () => {
         email: request.payload.email,
         password: md5(request.payload.password),
       };
-      request.cookieAuth.set({username: data.email, password: data.password})
+      request.cookieAuth.set({ username: data.email, password: data.password });
       return h.redirect().location("/users");
     },
   });
@@ -284,27 +288,47 @@ const init = async () => {
   });
 
   server.route({
-    method:'GET',
-    path:'/logout',
+    method: "GET",
+    path: "/users/toggle/{id}",
     handler: async (request, h) => {
-      request.cookieAuth.clear()
-      return h.redirect().location('/')
+      const id = request.params.id;
+      //buscamos el usuario que tenga el id correspondinete
+      let userToToggle = await User.find({ _id: id }).lean();
+      //obtenemos la propiedad active de ese usuario
+      property = userToToggle[0].active;
+      //actualiaqmos lq propiedad al contrario de lo que era
+      const disabledUser = await User.findOneAndUpdate(
+        { _id: id },
+        { active: !property },
+        {
+          new: true,
+        }
+      );
+      return h.redirect().location("/");
     },
-  })
+  });
 
   server.route({
-    method:'GET',
-    path:'/{any*}',
+    method: "GET",
+    path: "/logout",
+    handler: async (request, h) => {
+      request.cookieAuth.clear();
+      return h.redirect().location("/");
+    },
+  });
+
+  server.route({
+    method: "GET",
+    path: "/{any*}",
     options: {
       auth: {
-        mode: 'try'
-      }
+        mode: "try",
+      },
     },
     handler: (request, h) => {
-      return h.view('404')
-    }
-  })
-
+      return h.view("404");
+    },
+  });
 
   //inicializamos el servidor
   await server.start();
